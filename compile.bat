@@ -28,7 +28,7 @@ rem diverging logic based on current platform
 if /i "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
     echo "AMD64 architecture detected, including cross-compilation files"
     rem we need to use the x86_64 toolchain in order to compile
-    cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain_x86-64.cmake
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/toolchain_x86-64.cmake
     cmake --build .
 ) else if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" (
     echo "ARM64 architecture detected"
