@@ -11,4 +11,7 @@ if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
 endif()
 
 add_executable(Kernel src/main.c src/start.S)
-target_compile_definitions(Kernel PRIVATE -ffreestanding -nostdlib)
+
+target_compile_options(Kernel PRIVATE -ffreestanding -nostdlib)
+
+target_link_options(Kernel PRIVATE -Wl,-T,${CMAKE_CURRENT_SOURCE_DIR}/src/linker.ld -nostdlib -static)

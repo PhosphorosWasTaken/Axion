@@ -1,3 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-echo i have not yet made the bash script for compiling this project. If you are on linux, well, just use wine or smth till i finish this.
+set -e
+
+BUILD_DIR="build"
+
+cmake -B "${BUILD_DIR}" -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=aarch64 -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++
+
+cmake --build "${BUILD_DIR}" --parallel "$(nproc)"
+
+
