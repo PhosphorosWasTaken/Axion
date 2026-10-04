@@ -5,12 +5,33 @@
 #define UART0_DR  ((volatile uint32_t*)(MMIO_BASE + 0x00201000)) // Data Register
 #define UART0_FR  ((volatile uint32_t*)(MMIO_BASE + 0x00201018)) // Flag Register
 
+#define UART0_IBRD  ((volatile uint32_t*)(MMIO_BASE + 0x00201024)) // Integer Baud Rate Divider
+#define UART0_FBRD  ((volatile uint32_t*)(MMIO_BASE + 0x00201028)) // Fractional Baud Rate Divider
+#define UART0_LCRH  ((volatile uint32_t*)(MMIO_BASE + 0x0020102C)) // Line Control Register
+#define UART0_CR    ((volatile uint32_t*)(MMIO_BASE + 0x00201030)) // Control Register
+#define UART0_ICR   ((volatile uint32_t*)(MMIO_BASE + 0x00201044)) // Interrupt Clear Register
+
 #define FR_RXFF   (1 << 6)                                       // Recieve FIFO Full
 #define FR_RXFE   (1 << 4)                                       // Recieve FIFO Empty
 #define FR_TXFF   (1 << 5)                                       // Transmit FIFO Full
 #define FR_TXFE   (1 << 7)                                       // Transmit FIFO Empty
 
 #define SD_ADDR   0x3F300000                                     // SD card physical memory address
+
+// Get the UART ready for use
+void uartInit(void) {
+    *UART0_CR = 0; // Disable UART while editting commands
+
+    *UART0_ICR = 0x7FF; // Clear all pending interrupts
+
+    // Set Baud Rate to 115200
+    *UART0_IBRD = 26;
+    *UART0_FBRD = 3;
+
+    *UART0_LCRH = (1 << 4) | (1 << 5) | (1 << 6); // Enable FIFOs (bit 4) and set 8-bit word length (bits 5 and 6)
+
+    *UART0_CR = (1 << 0) | (1 << 8) | (1 << 9); // Enable UART0. TXE, and RXE
+}
 
 // Output character to serial connection
 void uart_putc(unsigned char c) {
@@ -43,6 +64,8 @@ char uartGetChar(void) {
 
 // Main loop
 void kernel_main(void) {
+    uartInit(); // Configure UART
+
     while (1) {
         char input = uartGetChar(); // Read user input
 
