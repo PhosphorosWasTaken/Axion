@@ -1,4 +1,4 @@
 build
 .clang-format
 .clang-tidy
-.clang
+.clangd

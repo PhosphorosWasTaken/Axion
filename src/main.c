@@ -6,33 +6,23 @@ l at EL2 or EL4 in 64-bit mode, which we are targeting.
 
 #include <stdint.h>
 
-#include "Buttons/Buttons.h"
+#include "Include/Buttons.h"
+#include "Include/Interrupts.h"
 
 #define MMIO_BASE 0x3F000000
 
 #define UART0_DR \
-    ((volatile uint32_t*)(MMIO_BASE + 0x00201000)) // Data Register
+    ((volatile uint64_t*)(MMIO_BASE + 0x00201000)) // Data Register
 #define UART0_FR \
-    ((volatile uint32_t*)(MMIO_BASE + 0x00201018)) // Flag Register
+    ((volatile uint64_t*)(MMIO_BASE + 0x00201018)) // Flag Register
 
 #define SD_ADDR \
-    ((volatile uint32_t*)0x3F300000) // SD card physical memory addr
+    ((volatile uint64_t*)0x3F300000) // SD card physical memory addr
 
 #define FR_RXFF (1 << 6) // Recieve FIFO Full
 #define FR_RXFE (1 << 4) // Recieve FIFO Empty
 #define FR_TXFF (1 << 5) // Transmit FIFO Full
 #define FR_TXFE (1 << 7) // Transmit FIFO Empty
-
-void __attribute__((interrupt("IRQ"))) irq_handler(void)
-{
-    uint8_t int_flag = mcp23017_read(INTFA);
-
-    if (int_flag != 0)
-    { // make sure there was an interrupt from the button GPIO
-        uint8_t captured_gpio = mcp23017_read(INTCAPA);
-        (void)captured_gpio;
-    }
-}
 
 // Output character to serial connection
 void uart_putc(unsigned char c)

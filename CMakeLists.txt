@@ -12,6 +12,14 @@ endif()
 
 add_executable(Kernel src/main.c src/start.S)
 
+add_library(Buttons SHARED src/Drivers/Buttons.c)
+target_compile_definitions(Buttons PRIVATE -ffreestanding)
+target_link_libraries(Kernel PRIVATE Buttons)
+
+add_library(Interrupts src/Drivers/Interrupts.h)
+target_compile_definitions(Interrupts PRIVATE -ffreestanding)
+target_link_libraries(Kernel PRIVATE Interrupts)
+
 target_compile_options(Kernel PRIVATE -ffreestanding -nostdlib)
 
 target_link_options(Kernel PRIVATE -Wl,-T,${CMAKE_CURRENT_SOURCE_DIR}/src/linker.ld -nostdlib -static)
