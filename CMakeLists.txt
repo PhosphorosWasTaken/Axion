@@ -6,18 +6,14 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 project(Axion LANGUAGES C CXX ASM)
 
-if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
-    message(FATAL_ERROR "Target processor must be 64 bit ARM!")
-endif()
-
 add_executable(Kernel src/main.c src/start.S)
 
 add_library(Buttons SHARED src/Drivers/Buttons.c)
-target_compile_definitions(Buttons PRIVATE -ffreestanding)
+target_compile_options(Buttons PRIVATE -ffreestanding)
 target_link_libraries(Kernel PRIVATE Buttons)
 
-add_library(Interrupts src/Drivers/Interrupts.h)
-target_compile_definitions(Interrupts PRIVATE -ffreestanding)
+add_library(Interrupts src/Drivers/Interrupts.c)
+target_compile_options(Interrupts PRIVATE -ffreestanding)
 target_link_libraries(Kernel PRIVATE Interrupts)
 
 target_compile_options(Kernel PRIVATE -ffreestanding -nostdlib)
