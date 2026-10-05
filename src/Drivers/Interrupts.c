@@ -1,4 +1,6 @@
 #include "../Include/Interrupts.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 void __attribute__((interrupt("IRQ"))) irq_handler(void)
 {

@@ -3,6 +3,7 @@
 #ifndef INTERRUPTS_H
 #define INTERRUPTS_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define GIC_CPU_BASE 0xFF842000
@@ -29,6 +30,19 @@
 #define IRQ_ID_UART_SECONDARY 161
 
 #define IRQ_ID_ARM_T 96
+
+// variables and functions for registering callback functions
+
+#define SYSTIME0_CALLBACK 0xFF // TODO: replace all these values with their actual location in RAM later
+#define SYSTIME1_CALLBACK 0xFF // TODO: keep in mind this location must align with an 8-byte offset because of direct writing issues.
+#define SYSTIME2_CALLBACK 0XFF
+#define SYSTIME3_CALLBACK 0XFF
+
+#define IRQ_I2C_CALLBACK      0XFF
+#define IRQ_SPI_CALLBACK      0XFF
+#define IRQ_ARM_T_CALLBACK    0XFF
+#define IRQ_UART_SEC_CALLBACK 0XFF
+#define IRQ_UART_PRI_CALLBACK 0XFF
 
 void __attribute__((interrupt("IRQ"))) irq_handler(void);
 
