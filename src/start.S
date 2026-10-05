@@ -8,6 +8,11 @@ _start:
     and     x0, x0, #0xFF
     cbz     x0, master_core
 
+hang:
+    // Hang cores 1-3
+    wfe
+    b       hang
+
 master_core:
     // Set stack pointer right before the kernel start address
     ldr     x0, =_start
