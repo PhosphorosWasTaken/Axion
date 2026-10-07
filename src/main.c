@@ -1,12 +1,10 @@
-/*
-Notes:
-- firmware will pass control to kernel at EL2 or EL4 in 64-bit mode, which we are targeting.
-*/
+/* Notes: - firmware will pass control to kernel at EL2 or EL4 in 64-bit mode, which we are targeting. */
 
 #include <stdint.h>
 
 #include "Include/Buttons.h"
 #include "Include/Interrupts.h"
+#include "Include/vfs.h"
 
 #define MMIO_BASE 0x3F000000
 
@@ -28,6 +26,26 @@ Notes:
 #define FR_RXFE   (1 << 4)                                       // Recieve FIFO Empty
 #define FR_TXFF   (1 << 5)                                       // Transmit FIFO Full
 #define FR_TXFE   (1 << 7)                                       // Transmit FIFO Empty
+
+static inline void outb(uint16_t port, uint8_t val) {
+    asm volatile ("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
+static inline uint8_t inb(uint16_t port) {
+    uint8_t ret;
+    asm volatile ("inb %1, %0" : "=a"(ret) : "Nd"(port));
+    return ret;
+}
+
+static inline void outw(uint16_t port, uint16_t val) {
+    asm volatile ("outw %0, %1" : : "a"(val), "Nd"(port));
+}
+
+static inline uint16_t inw(uint16_t port) {
+    uint16_t ret;
+    asm voatile ("inw %1, %0" : "=a"(ret) : "Nd"(port));
+    return ret;
+}
 
 // Get the UART ready for use
 void uartInit(void) {
@@ -77,9 +95,34 @@ char uartGetChar(void) {
 void kernel_main(void) {
     uartInit(); // Configure UART
 
+    char command[128] = {' '};
+
+    int letter = 0;
+
+    test();
+
     while (1) {
         char input = uartGetChar(); // Read user input
 
+        command[letter] = input;
+
+        if (input == '\r') {
+
+            letter = 0;
+
+            uart_putc('|');
+
+            for(int i = 0; i < 128; i++) {
+                uart_putc(command[i]);
+            }
+
+            for (int t = 0; t <128; t++) {
+                command[t] = 0;
+            }
+        }
+
         uart_putc(input);
+
+        letter++;
     }
 }
