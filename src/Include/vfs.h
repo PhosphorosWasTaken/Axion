@@ -21,6 +21,7 @@
 
 #ifndef VFS_H
 #define VFS_H
+#include <stdint.h>
 
 #define test(void)
 
