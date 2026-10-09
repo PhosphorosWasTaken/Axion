@@ -43,7 +43,7 @@ static inline void outw(uint16_t port, uint16_t val) {
 
 static inline uint16_t inw(uint16_t port) {
     uint16_t ret;
-    asm voatile ("inw %1, %0" : "=a"(ret) : "Nd"(port));
+    asm volatile ("inw %1, %0" : "=a"(ret) : "Nd"(port));
     return ret;
 }
 
@@ -99,7 +99,11 @@ void kernel_main(void) {
 
     int letter = 0;
 
-    test();
+    uart_putc('h');
+
+    write("name", "hello", 1);
+
+    uart_putc('t');
 
     while (1) {
         char input = uartGetChar(); // Read user input
