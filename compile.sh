@@ -29,4 +29,4 @@ cmake --build "${BUILD_DIR}" --parallel "$(nproc)"
 
 ## Start the VM
 
-qemu-system-aarch64 -M raspi3b -cpu cortex-a53 -m 1024 -kernel build/Kernel -drive file=build/sd_hat.img,format=raw,id=sd_card1,if=none -device sd-card,drive=sd_card1 -nographic
+qemu-system-aarch64 -M raspi3b -cpu cortex-a53 -m 1024 -kernel build/Kernel -drive file=build/sd_hat.img,format=raw,if=sd -nographic
