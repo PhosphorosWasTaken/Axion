@@ -672,3 +672,38 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
+
+
+------------------------------------------------------------------------
+ADDITIONAL TERMS UNDER GNU GPL v3 SECTION 7
+
+Pursuant to Section 7 of the GNU General Public License, version 3, the 
+original copyright holders supplement the terms of the License with the 
+following permissible conditions:
+
+1. Preservation of Boot/Startup Attribution (Section 7b & 7c):
+   The original startup/boot splash screen displaying either the authorship text 
+   "Made by PhosphorosWasTaken and p123o215" OR the text "made with love by Axion team" 
+   constitutes an Appropriate Legal Notice under Section 5(d). Any modified 
+   version, derivative work, or distribution of this software (including when 
+   pre-installed on hardware) must execute this startup sequence displaying 
+   at least one of these exact author attribution strings. Downstream modifiers 
+   are explicitly prohibited from removing, bypassing, or obfuscating this text. 
+   The text must remain clearly visible and legible for a reasonable duration 
+   during the normal system boot lifecycle.
+
+
+2. Structure of Contributor Menus (Section 7b):
+   If a modified version or derivative work contains a graphical or interactive 
+   user interface displaying contributor, credit, or author notices, the 
+   original creators must be prominently listed. Modifiers may separate 
+   the credits into distinct sections (e.g., distinguishing original authors 
+   from downstream modifiers), provided that both sections reside on the 
+   same view or page and maintain equal visual prominence. 
+
+3. Limits on Aesthetic Modification:
+   While downstream modifiers retain the freedom to alter the overall visual 
+   design, layout, colors, and typography of the software's interfaces to match 
+   their custom project styling, such modifications must never render the 
+   required attribution notices illegible, hidden, or functionally inaccessible 
+   to an ordinary end user.
