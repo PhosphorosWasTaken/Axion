@@ -1,0 +1,51 @@
+name: Validate File Headers
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify File Headers
+        run: |
+          HEADER_TEXT="Copyright (C) 2026  PhosphorosWasTaken"
+          FAILED=0
+
+          # 1. Gather files matching specific extensions or names
+          # 2. Exclude explicit exceptions and core system paths
+          find . -type f \
+            \( \
+              -name "*.txt" -o \
+              -name "*.c" -o \
+              -name "*.h" -o \
+              -name "*.cpp" -o \
+              -name "*.hpp" -o \
+              -name "*.S" -o \
+              -name "*.asm" -o \
+              -name "*.py" -o \
+              -name "Makefile" -o \
+              -name "*.sh" -o \
+              -name "*.bat" -o \
+              -name "*.cmake" -o \
+              -name "*.ld" \
+            \) \
+            -not -name "config.txt" \
+            -not -name "documentation.txt" \
+            -not -path "*/node_modules/*" \
+            -not -path "*/.git/*" | while read -r file; do
+            
+            # Check if the header phrase exists anywhere in the first 10 lines
+            if ! head -n 10 "$file" | grep -q "$HEADER_TEXT"; then
+              echo "❌ Error: $file is missing the required header in its first 10 lines!"
+              FAILED=1
+            fi
+          done
+
+          # If any file failed the check, exit with an error code to block the PR/commit
+          if [ $FAILED -ne 0 ]; then
+            echo "Header verification failed."
+            exit 1
+          fi
