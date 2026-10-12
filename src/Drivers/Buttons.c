@@ -20,3 +20,29 @@
 #pragma once
 
 #include "../Include/Buttons.h"
+
+void initialize_mcp23s17();
+
+void delay_us(int us){
+
+};
+
+void spi_init();
+
+void spi_transfer();
+
+uint8_t mcp23s17_read_port(uint8_t port_reg);
+
+void mcp23s17_write_port(uint8_t port_reg, uint8_t value);
+
+uint8_t mcp23s17_read_interrupt_flags();
+
+bool get_button_state(uint32_t button){
+    //read from memory offset and return the & of the int with the memory offset
+    if(button && !(button & (button - 1))){//check to make sure only one bit is set to 0
+        return  (*(volatile uint32_t*)(BUTTONSTATES) & button) > 0 ? true : false;
+    }
+    else {
+        //TODO: raise an exception that the program asked to check more than one button.
+    }
+}
